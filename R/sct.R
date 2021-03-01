@@ -108,7 +108,7 @@ plot_sct<-function(sct, sample_field=NULL, condition_field=NULL, main=NULL) {
                                        ))
 
   # Special case if too many samples on the plot
-  if ( length(unique(dplyr::pull(sct,sample_field))) > 6 ) {
+  if ( length(unique(dplyr::pull(sct,condition_field))) > 6 ) {
       # Skip the shapes altogether and stick with color only.
       g <- g + ggplot2::geom_jitter(height=0, width=0.2, shape=21,
                                     mapping=ggplot2::aes(fill=.data[[sample_field]]))
