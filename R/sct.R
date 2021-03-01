@@ -139,9 +139,14 @@ plot_sct<-function(sct, sample_field=NULL, condition_field=NULL, main=NULL) {
 #' @return A sct (sample-condition table).
 #' @export
 #'
-build_sct<-function(x, sample_field, condition_field) {
+build_sct<-function(x, sample_field=NULL, condition_field=NULL) {
   assertthat::assert_that(methods::is(x, "ExpressionSet"),
+                          assertthat::not_empty(sample_field),
                           assertthat::has_name(Biobase::pData(x), sample_field))
+
+  # If condition field is empty, just reuse samlpe field
+  if ( is.null(condition_field))
+    condition_field<-sample_field
 
   # Combine gene expression and pData fields into single entity.
   sct<-cbind(
