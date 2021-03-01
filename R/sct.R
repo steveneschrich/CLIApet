@@ -108,7 +108,7 @@ plot_sct<-function(sct, sample_field=NULL, condition_field=NULL, main=NULL) {
                                    shape=.data[[condition_field]],
                                    color=.data[[sample_field]]))
   # Special case if too many samples on the plot
-  if ( length(unique(sct[,sample_field])) > 5 ) {
+  if ( length(unique(dplyr::pull(sct,sample_field))) > 5 ) {
     g <- g +
       ggplot2::geom_jitter(height=0, width=0.2, mapping=ggplot2::aes(shape=1)) +
       ggrepel::geom_text_repel(mapping = ggplot2::aes(label=.data[[sample_field]]))
