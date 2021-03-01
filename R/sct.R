@@ -120,6 +120,10 @@ plot_sct<-function(sct, sample_field=NULL, condition_field=NULL, main=NULL) {
                                                 color=.data[[sample_field]]))
   }
 
+  # If we are plotting gene ranks, then make a continuous scale
+  if (all(sct$Expression %in% 1:10))
+    g <- g + scale_y_continuous(breaks=1:10)
+
   # Finish the plot
   g +
     ggplot2::theme_bw() +
