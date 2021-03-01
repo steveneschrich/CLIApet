@@ -151,7 +151,7 @@ build_sct<-function(x, sample_field=NULL, condition_field=NULL) {
   # Combine gene expression and pData fields into single entity.
   sct<-cbind(
     t(Biobase::exprs(x)),
-    Biobase::pData(x)[,c(sample_field, condition_field)]
+    Biobase::pData(x)[,unique(c(sample_field, condition_field)),drop=F]
   )
 
   # Then pivot the data to usable form.
