@@ -4,7 +4,7 @@
 \alias{build_sct}
 \title{Build an SCT from an ExpressionSet}
 \usage{
-build_sct(x, sample_field, condition_field)
+build_sct(x, sample_field = NULL, condition_field = NULL)
 }
 \arguments{
 \item{x}{An ExpressionSet (possibly reduced gene list)}

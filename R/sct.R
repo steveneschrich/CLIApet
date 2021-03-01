@@ -103,11 +103,20 @@ plot_sct<-function(sct, sample_field=NULL, condition_field=NULL, main=NULL) {
            !!condition_field := factor(.data[[condition_field]]))
 
   # ggplot sct.
-  ggplot2::ggplot(sct, ggplot2::aes(x=.data$Gene,
+  g<-ggplot2::ggplot(sct, ggplot2::aes(x=.data$Gene,
                                    y=.data$Expression,
                                    shape=.data[[condition_field]],
-                                   color=.data[[sample_field]])) +
-    ggplot2::geom_jitter(height=0, width=0.2) +
+                                   color=.data[[sample_field]]))
+  # Special case if too many samples on the plot
+  if ( length(unique(sct[,sample_field])) > 5 ) {
+    g <- g +
+      ggplot2::geom_jitter(height=0, width=0.2, mapping=ggplot2::aes(shape=1)) +
+      ggrepel::geom_text_repel(mapping = ggplot2::aes(label=.data[[sample_field]]))
+  } else {
+    g <- g + ggplot2::geom_jitter(height=0, width=0.2)
+  }
+  # Finish the plot
+  g +
     ggplot2::theme_bw() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, size=8, hjust=1)) +
     ggplot2::ggtitle(main) +
