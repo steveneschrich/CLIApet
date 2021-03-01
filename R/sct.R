@@ -104,17 +104,21 @@ plot_sct<-function(sct, sample_field=NULL, condition_field=NULL, main=NULL) {
 
   # ggplot sct.
   g<-ggplot2::ggplot(sct, ggplot2::aes(x=.data$Gene,
-                                   y=.data$Expression,
-                                   shape=.data[[condition_field]],
-                                   color=.data[[sample_field]]))
+                                       y=.data$Expression,
+                                       #color=.data[[sample_field]],
+                                       fill = .data[[sample_field]]))
+
   # Special case if too many samples on the plot
-  if ( length(unique(dplyr::pull(sct,sample_field))) > 5 ) {
-    g <- g +
-      ggplot2::geom_jitter(height=0, width=0.2, mapping=ggplot2::aes(shape=1)) +
-      ggrepel::geom_text_repel(mapping = ggplot2::aes(label=.data[[sample_field]]))
+  if ( length(unique(dplyr::pull(sct,sample_field))) > 6 ) {
+      # Skip the shapes altogether and stick with color only.
+      g <- g + ggplot2::geom_jitter(height=0, width=0.2, shape=21)
   } else {
-    g <- g + ggplot2::geom_jitter(height=0, width=0.2)
+      # Map shape to the condition.
+      g <- g +
+      ggplot2::geom_jitter(height=0, width=0.2,
+                           mapping=ggplot2::aes(shape=.data[[condition_field]]))
   }
+
   # Finish the plot
   g +
     ggplot2::theme_bw() +
